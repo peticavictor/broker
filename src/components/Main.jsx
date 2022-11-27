@@ -2,7 +2,7 @@ import './Main.css';
 import anime from "animejs/lib/anime.es.js"
 
 function Main() {
-
+  
   setTimeout(() => {
     // Wrap every letter in a span
     var textWrapper = document.querySelector('.ml12');
@@ -31,9 +31,9 @@ function Main() {
       <div className="container">
         <h1 className="ml12" id='ml12'>Four out of Five Dentists Recommend Broker</h1>
       </div>
-      <div className=''>
-        <button id='buttonId' className='scrollBtn mb-3' ></button>
-      </div>
+      {/* <div className=''>
+        <button id='buttonId' className='scrollBtn mb-3' onClick={handleClick} ></button>
+      </div> */}
     </div>
   );
 }
