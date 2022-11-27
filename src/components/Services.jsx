@@ -24,7 +24,7 @@ export default function Services() {
     ]
     return (
         // <div className="services d-flex flex-column justify-content-center" id='services'>
-            <Slide arrows={null} duration={2000} transitionDuration={1000} pauseOnHover={false}>
+            <Slide arrows={null} duration={2000} transitionDuration={500} pauseOnHover={false}>
                 {services.map((slideImage, index)=> (
                     <div className="each-slide d-flex flex-column justify-content-center align-items-center" key={index}>
                         <div 
