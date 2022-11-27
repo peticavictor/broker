@@ -1,5 +1,6 @@
 .App {
     background-image: url('../public/4.jpg') ;
+    /* background-image: url('../public/5.jpg') ; */
     background-size: cover;
     transition: 1s;
 }
