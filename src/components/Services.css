@@ -9,5 +9,14 @@
 
 .service-image {
     height: 50vh;
+    width: 50vw !important;
     box-shadow: 0 0 100px whitesmoke;
+}
+
+@media screen and (max-width: 500px) {
+    .service-image {
+        height: 75vh;
+        width: 75vw !important;
+    }
+
 }
