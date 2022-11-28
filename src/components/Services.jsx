@@ -24,13 +24,14 @@ export default function Services() {
     ]
     return (
         // <div className="services d-flex flex-column justify-content-center" id='services'>
-            <Slide arrows={null} duration={2000} transitionDuration={500} pauseOnHover={false}>
+            <Slide arrows={null} pauseOnHover={false}>
                 {services.map((slideImage, index)=> (
                     <div className="each-slide d-flex flex-column justify-content-center align-items-center" key={index}>
                         <div 
                         style={{ 
                             backgroundSize: `cover`,
-                            backgroundImage: `linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)), url(${slideImage.image})`,
+                            backgroundImage: `url(${slideImage.image})`,
+                            // backgroundImage: `linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)), url(${slideImage.image})`,
                         }} 
                         className='service-image rounded d-flex justify-content-center'
                         >
