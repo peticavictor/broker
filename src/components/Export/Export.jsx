@@ -5,14 +5,16 @@ function Export() {
     return <ReactScrollWheelHandler
         id='export'
         upHandler={(e) => {
-            console.log('up')
             e.preventDefault(); 
             document.getElementById('import').scrollIntoView()
+            document.getElementById('import').style.opacity = 1;
+            document.getElementById('export').style.opacity = 0.25;
         }}
         downHandler={(e) => {
-            console.log('down')
             e.preventDefault(); 
             document.getElementById('transit').scrollIntoView()
+            document.getElementById('transit').style.opacity = 1;
+            document.getElementById('export').style.opacity = 0.25;
         }}
         // timer='100'
     >

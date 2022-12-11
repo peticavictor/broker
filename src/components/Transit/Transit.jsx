@@ -5,14 +5,16 @@ function Transit() {
     return <ReactScrollWheelHandler
         id='transit'
         upHandler={(e) => {
-            console.log('up')
             e.preventDefault(); 
             document.getElementById('export').scrollIntoView()
+            document.getElementById('transit').style.opacity = 0.25;
+            document.getElementById('export').style.opacity = 1;
         }}
         downHandler={(e) => {
-            console.log('down')
             e.preventDefault(); 
             document.getElementById('contacts').scrollIntoView()
+            document.getElementById('contacts').style.opacity = 1;
+            document.getElementById('transit').style.opacity = 0.25;
         }}
         // timer='100'
     >

@@ -26,31 +26,28 @@ function Main() {
       delay: (el, i) => 100 + 30 * i
     });
   },1000)
-
-  // document.body.style.overflow = 'hidden';
   
   return (
     <ReactScrollWheelHandler 
       id='main'
       upHandler={(e) => {
-        console.log('up')
         e.preventDefault(); 
         document.getElementById('main').scrollIntoView()
+        document.getElementById('main').style.opacity = 1;
       }}
       downHandler={(e) => {
-        console.log('down')
         e.preventDefault(); 
-        document.getElementById('import').scrollIntoView()
+        document.getElementById('services').scrollIntoView()
+        document.getElementById('services').style.opacity = 1;
+        document.getElementById('main').style.opacity = 0.25;
       }}
       // timer='100'
     >
-      <div className="main ">
+      <div className="main " >
         <div className="container">
-          <h1 className="ml12" id='ml12'>Four out of Five Dentists Recommend Broker</h1>
+          <h1 className="ml12 text-light" id='ml12'>Four out of Five Dentists Recommend Broker</h1>
         </div>
-        {/* <div className=''>
-          <button id='buttonId' className='scrollBtn mb-3' onClick={handleClick} ></button>
-        </div> */}
+        
       </div>
     </ReactScrollWheelHandler>
   );

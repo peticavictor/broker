@@ -1,11 +1,10 @@
 import { BrowserRouter } from "react-router-dom";
 import Context from "./components/Context";
-import Main from "./components/Main";
 import './App.css';
-import Contacts from "./components/Contacts";
-import Import from "./components/Import";
-import Export from "./components/Export";
-import Transit from "./components/Transit";
+
+import Contacts from "./components/Contacts/Contacts";
+import Main from "./components/Main/Main";
+import Services from "./components/Services/Services";
 
 function App() {
   return (
@@ -13,9 +12,7 @@ function App() {
       <BrowserRouter>
         <Context >
           <Main />
-          <Import />
-          <Export />
-          <Transit />
+          <Services />
           <Contacts />
         </Context>
       </BrowserRouter>

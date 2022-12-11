@@ -5,18 +5,20 @@ function Import() {
     return <ReactScrollWheelHandler
         id='import'
         upHandler={(e) => {
-            console.log('up')
             e.preventDefault(); 
             document.getElementById('main').scrollIntoView()
+            document.getElementById('import').style.opacity = 0.25;
+            document.getElementById('main').style.opacity = 1;
         }}
         downHandler={(e) => {
-            console.log('down')
             e.preventDefault(); 
             document.getElementById('export').scrollIntoView()
+            document.getElementById('import').style.opacity = 0.25;
+            document.getElementById('export').style.opacity = 1;
         }}
         // timer='100'
     >
-        <h1>Import</h1>
+        {/* <h1>Import</h1> */}
     </ReactScrollWheelHandler>
 }
 
