@@ -14,7 +14,7 @@ function Import() {
             e.preventDefault(); 
             document.getElementById('export').scrollIntoView()
         }}
-        timer='100'
+        // timer='100'
     >
         <h1>Import</h1>
     </ReactScrollWheelHandler>

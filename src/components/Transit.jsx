@@ -14,7 +14,7 @@ function Transit() {
             e.preventDefault(); 
             document.getElementById('contacts').scrollIntoView()
         }}
-        timer='100'
+        // timer='100'
     >
         <h1>Transit</h1>
     </ReactScrollWheelHandler>

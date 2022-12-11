@@ -42,7 +42,7 @@ function Main() {
         e.preventDefault(); 
         document.getElementById('import').scrollIntoView()
       }}
-      timer='100'
+      // timer='100'
     >
       <div className="main ">
         <div className="container">

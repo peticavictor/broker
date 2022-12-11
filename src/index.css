@@ -18,6 +18,12 @@ body {
   width:100vw; */
 }
 
-::-webkit-scrollbar {
-  /* width: 0; */
+@media screen and (min-width: 500px) {
+  ::-webkit-scrollbar {
+    width: 0;
+  }
+
+  body {
+    overflow: hidden;
+  }
 }

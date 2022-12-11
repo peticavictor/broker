@@ -15,7 +15,7 @@ export default function Contacts() {
                 e.preventDefault(); 
                 document.getElementById('transit').scrollIntoView()
             }}
-            timer='100'
+            // timer='100'
         >
             <div className="contacts d-flex justify-content-center align-items-center">
                 {/* <h1 className='display-1 fw-bold'>Contacts</h1> */}

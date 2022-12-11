@@ -14,7 +14,7 @@ function Export() {
             e.preventDefault(); 
             document.getElementById('transit').scrollIntoView()
         }}
-        timer='100'
+        // timer='100'
     >
         <h1>Export</h1>
     </ReactScrollWheelHandler>
