@@ -13,11 +13,6 @@ code {
     monospace;
 }
 
-body {
-  /* height:100vh;
-  width:100vw; */
-}
-
 @media screen and (min-width: 500px) {
   ::-webkit-scrollbar {
     width: 0;
@@ -25,5 +20,9 @@ body {
 
   body {
     overflow: hidden;
+  }
+
+  #services, #main, #contacts {
+    opacity: 1;
   }
 }
