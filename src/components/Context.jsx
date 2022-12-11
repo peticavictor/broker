@@ -1,4 +1,4 @@
-import { React, createContext, useState, useRef, useEffect } from "react";
+import { React, createContext} from "react";
 export const ctx = createContext()
 
 export default function Context({children}) {

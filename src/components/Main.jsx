@@ -1,5 +1,6 @@
 import './Main.css';
 import anime from "animejs/lib/anime.es.js"
+import ReactScrollWheelHandler from "react-scroll-wheel-handler";
 
 function Main() {
   
@@ -26,15 +27,32 @@ function Main() {
     });
   },1000)
 
+  document.body.style.overflow = 'hidden';
+  
   return (
-    <div className="main " id='main' >
-      <div className="container">
-        <h1 className="ml12" id='ml12'>Four out of Five Dentists Recommend Broker</h1>
+    <ReactScrollWheelHandler 
+      id='main'
+      upHandler={(e) => {
+        console.log('up')
+        e.preventDefault(); 
+        document.getElementById('main').scrollIntoView()
+      }}
+      downHandler={(e) => {
+        console.log('down')
+        e.preventDefault(); 
+        document.getElementById('import').scrollIntoView()
+      }}
+      timer='100'
+    >
+      <div className="main ">
+        <div className="container">
+          <h1 className="ml12" id='ml12'>Four out of Five Dentists Recommend Broker</h1>
+        </div>
+        {/* <div className=''>
+          <button id='buttonId' className='scrollBtn mb-3' onClick={handleClick} ></button>
+        </div> */}
       </div>
-      {/* <div className=''>
-        <button id='buttonId' className='scrollBtn mb-3' onClick={handleClick} ></button>
-      </div> */}
-    </div>
+    </ReactScrollWheelHandler>
   );
 }
 

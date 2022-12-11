@@ -1,6 +1,13 @@
 .main {
   height: 100vh;
   transition: 1s;
+
+  background-image: 
+    linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),
+    url('https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80') ;
+  background-size: cover;
+  background-position: bottom;
+  transition: 1s;
 }
 .scrollBtn {
   height: 50px;

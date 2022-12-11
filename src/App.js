@@ -1,10 +1,11 @@
 import { BrowserRouter } from "react-router-dom";
 import Context from "./components/Context";
 import Main from "./components/Main";
-import Services from "./components/Services";
 import './App.css';
 import Contacts from "./components/Contacts";
-import Scroll from "./components/SmoothScroll";
+import Import from "./components/Import";
+import Export from "./components/Export";
+import Transit from "./components/Transit";
 
 function App() {
   return (
@@ -12,10 +13,11 @@ function App() {
       <BrowserRouter>
         <Context >
           <Main />
-          <Services />
+          <Import />
+          <Export />
+          <Transit />
           <Contacts />
         </Context>
-        <Scroll />
       </BrowserRouter>
     </div>
   );

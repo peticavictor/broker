@@ -1,6 +1,7 @@
 import './Services.css';
 import 'react-slideshow-image/dist/styles.css'
 import { Slide } from 'react-slideshow-image';
+import ReactScrollWheelHandler from "react-scroll-wheel-handler";
 
 export default function Services() {
 
@@ -23,23 +24,31 @@ export default function Services() {
 
     ]
     return (
-        // <div className="services d-flex flex-column justify-content-center" id='services'>
-            <Slide arrows={null} pauseOnHover={false}>
-                {services.map((slideImage, index)=> (
-                    <div className="each-slide d-flex flex-column justify-content-center align-items-center" key={index}>
-                        <div 
-                        style={{ 
-                            backgroundSize: `cover`,
-                            backgroundImage: `url(${slideImage.image})`,
-                            // backgroundImage: `linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)), url(${slideImage.image})`,
-                        }} 
-                        className='service-image rounded d-flex justify-content-center'
-                        >
-                            <h2 className='text-light pt-3 opacity-75'>{slideImage.service}</h2>
+        <ReactScrollWheelHandler 
+            id='services'
+            upHandler={(e) => {e.preventDefault(); document.getElementById('main').scrollIntoView()}}
+            downHandler={(e) => {e.preventDefault(); document.getElementById('contacts').scrollIntoView()}}
+            timer='1000'
+        >
+            <div className="services d-flex flex-column justify-content-center" >
+                <Slide arrows={null} pauseOnHover={false}>
+                    {services.map((slideImage, index)=> (
+                        <div className="each-slide d-flex flex-column justify-content-center align-items-center" key={index}>
+                            <div 
+                            style={{ 
+                                backgroundSize: `cover`,
+                                backgroundImage: `url(${slideImage.image})`,
+                                // backgroundImage: `linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)), url(${slideImage.image})`,
+                            }} 
+                            className='service-image rounded d-flex justify-content-center'
+                            >
+                                <h2 className='text-light pt-3 opacity-75'>{slideImage.service}</h2>
+                            </div>
                         </div>
-                    </div>
-                ))} 
-            </Slide>
-        // </div>
+                    ))} 
+                </Slide>
+            </div>
+        </ReactScrollWheelHandler>
+        
     )
 }
