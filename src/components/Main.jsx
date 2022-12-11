@@ -27,7 +27,7 @@ function Main() {
     });
   },1000)
 
-  document.body.style.overflow = 'hidden';
+  // document.body.style.overflow = 'hidden';
   
   return (
     <ReactScrollWheelHandler 
