@@ -9,8 +9,18 @@
     opacity: 0.25;
 }
 
-.contacts h1 {
-    -webkit-box-reflect: below 1px linear-gradient(transparent, #0008);
-    line-height: 0.8em;
-    outline: none;
+#contacts h1 {
+    font-size: 36px !important;
+    font-weight: 200;
+    font-size: 1.8em;
+    text-transform: uppercase;
+    letter-spacing: 0.5em;
+    text-align: center;
+}
+
+#contacts h6 {
+    font-weight: 200;
+    text-transform: uppercase;
+    letter-spacing: 0.5em;
+    text-align: center;
 }

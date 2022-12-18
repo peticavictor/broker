@@ -55,7 +55,7 @@ function Services() {
         }}
     >
         <div className="services d-flex justify-content-center align-items-center">
-            <h1 className='service-name display-1 fw-bold text-light'>{shownService}</h1>
+            <h1 className='service-name text-light'>{shownService}</h1>
         </div>
         
     </ReactScrollWheelHandler>
