@@ -1,11 +1,30 @@
 import './Contacts.css';
 import ReactScrollWheelHandler from "react-scroll-wheel-handler";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPhone } from '@fortawesome/free-solid-svg-icons';
+import emailjs from '@emailjs/browser';
+import { useRef, useState } from 'react';
 
 export default function Contacts() {
     let email = 'peticavictor@gmail.com';
     const emailChars = email.split('');
+
+    // const [user_name, setUser_name] = useState('');
+    // const [lastName, setLastName] = useState('');
+
+    const form = useRef();
+
+    const sendEmail = (e) => {
+        e.preventDefault();
+
+        emailjs.sendForm('service_k2by2yx', 'template_mhr5r28', form.current, 'LJ8zJVty0i6T2YgFq')
+        .then((result) => {
+            alert('Message Sent! ');
+            document.getElementById('user-name').value = '';
+            document.getElementById('user-email').value = '';
+            document.getElementById('user-message').value = '';
+        }, (error) => {
+            alert('Message Not Sent! ');
+        });
+    };
 
     return (
         <ReactScrollWheelHandler
@@ -18,10 +37,7 @@ export default function Contacts() {
             upHandler={(e) => {
                 e.preventDefault(); 
                 document.getElementById('services').scrollIntoView()
-                document.getElementById('contacts').style.opacity = 0.25;
-                document.getElementById('services').style.opacity = 1;
             }}
-            // timer='100'
         >
             <div className="h-50"></div>   
             <div className="h-50 w-100 d-flex flex-row">
@@ -30,9 +46,7 @@ export default function Contacts() {
                         width="600" 
                         height="450" 
                         style={{border:0, opacity: '80%'}}
-                        allowfullscreen="" 
                         loading="lazy" 
-                        referrerpolicy="no-referrer-when-downgrade"
                         title='map'
                         className='h-100 w-100'></iframe>
                 </div>
@@ -44,12 +58,14 @@ export default function Contacts() {
                     </h6> 
                     <h6 className='text-light p-2 d-flex flex-wrap'>Chisinau, str. Industriala 73</h6> 
                 </div>
-                <div className="h-100 bg-dark d-flex flex-column justify-content-center align-items-center p-4" style={{width:'33vw', opacity: '80%'}}>
-                    <h1 className='text-light'>Email Us</h1>
-                    <input type="text"  placeholder='Name' className='form-control m-2'/>
-                    <input type="email"  placeholder='Email' className='form-control m-2'/>
-                    <input type="text"  placeholder='Content' className='form-control m-2'/>
-                    <button className="btn btn-outline-light m-2">Send</button>
+                <div className="h-100 bg-dark d-flex flex-column justify-content-center align-items-center" style={{width:'33vw', opacity: '80%'}}>
+                    <form ref={form} onSubmit={sendEmail} className='text-center '>
+                        <h1 className='text-light ms-2'>Email Us</h1>
+                        <input id='user-name' type="text"  placeholder='Name' className='form-control mt-2' name="user_name" required />
+                        <input id='user-email' type="email"  placeholder='Email' className='form-control mt-2' name="user_email" required/>
+                        <input id='user-message' type="text"  placeholder='Content' className='form-control mt-2' name="message" required/>
+                        <input type="submit" className="btn btn-outline-light m-2" value="Send"/>
+                    </form>
                 </div>
             </div>
         </ReactScrollWheelHandler>   

@@ -33,15 +33,11 @@ function Main() {
       upHandler={(e) => {
         e.preventDefault(); 
         document.getElementById('main').scrollIntoView()
-        document.getElementById('main').style.opacity = 1;
       }}
       downHandler={(e) => {
         e.preventDefault(); 
         document.getElementById('services').scrollIntoView()
-        document.getElementById('services').style.opacity = 1;
-        document.getElementById('main').style.opacity = 0.25;
       }}
-      // timer='100'
     >
       <div className="main " >
         <div className="container">

@@ -11,51 +11,6 @@
   transition: 1s;
 }
 
-/* .scrollBtn {
-  height: 50px;
-  width: 30px;
-  border: 2px solid whitesmoke;
-  border-radius: 50px;
-  background: none;
-  cursor: pointer;
-  position: absolute;
-  top: 90vh;
-  left: 50%;
-}
-.scrollBtn::before, 
-.scrollBtn::after {
-  content: '';
-  position: absolute;
-  top: 10%;
-  left: 50%;
-  border: 2px solid whitesmoke;
-  height: 10px;
-  width: 10px;
-  transform: translate(-50%, -100%) rotate(45deg);
-  border-top: transparent;
-  border-left: transparent;
-  animation: scrollBtn 1s ease-in-out infinite;
-}
-.scrollBtn::after {
-  top: 20%;
-  animation-delay: .4s;
-}
-@keyframes scrollBtn {
-  0%{
-    opacity: 0;
-  }
-  30% {
-    opacity: 1;
-  }
-  60% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    top: 90%;
-  }
-} */
-
 .container {
   font-size: 24px;
   font-family: PT Sans, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
