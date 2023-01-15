@@ -49,7 +49,10 @@ function Services() {
             headers: {'Content-Type': 'application/json'} 
         })
         
-        console.log(response.status)
+        alert('Message Sent!');
+        document.getElementById('account').value = '';
+        document.getElementById('phone').value = '';
+        document.getElementById('description').value = '';
     }
 
     return <ReactScrollWheelHandler
