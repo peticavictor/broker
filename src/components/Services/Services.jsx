@@ -43,29 +43,29 @@ function Services() {
         {"name":"test","salary":"123","age":"23"}
     ]
 
-    const header = {
-        'cors' : 'no-cors',
-        'Access-Control-Allow-Origin': '*',
-        'Accept': '*/*',
-        'Content-Type': 'application/json',
-        'Accept-Encoding': 'gzip, deflate, br',
-        'Connection' : 'keep-alive',
-        'Content-Length' : '<calculated when request is sent>',
-        'Host' : '<calculated when request is sent>',
-        'User-Agent' : 'PostmanRuntime/7.30.0',
-    }
+    const headers= [
+        {
+        "source": "/api/(.*)",
+        "headers": [
+            { "key": "Access-Control-Allow-Credentials", "value": "true" },
+            { "key": "Access-Control-Allow-Origin", "value": "*" },
+            { "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
+            { "key": "Access-Control-Allow-Headers", "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" }
+        ]
+        }
+    ]
     
     const postAccount = async (e) => {
         e.preventDefault();
         axios(url, {
             method: 'POST',
-            mode: 'no-cors',
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body
+            // mode: 'no-cors',
+            headers: headers, //{
+            //     'Access-Control-Allow-Origin': '*',
+            //     Accept: 'application/json',
+            //     'Content-Type': 'application/json',
+            // },
+            body: body
         }).then((response) => {
             console.log(response);
         }).catch((e) => {
