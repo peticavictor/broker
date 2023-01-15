@@ -1,9 +1,12 @@
 import anime from "animejs";
+import axios from "axios";
 import { useRef, useState } from "react";
 import ReactScrollWheelHandler from "react-scroll-wheel-handler";
 import './Services.css';
 
 function Services() {
+
+    // const express = require('express');
 
     const services = [
         'Import',
@@ -27,52 +30,47 @@ function Services() {
     }
 
     const form = useRef();
-    const url = 'https://salesforce-lnirwi.5sc6y6-1.usa-e2.cloudhub.io';
-    const action = '/create';
-    // const endpoint = 'https://corapid-dev-ed.develop.my.salesforce.com';
-    // const clientId = '3MVG9vvlaB0y1YsKKriE_qRVbGt22bQa1YHAKuMO2k18zw_biQ2qGH9PqSMtNtQTqGRr.sPYmtB8Hi0Hhg0rm';
-    // const client_secret = '7A81FFB78E521B6B9CD9A5766D9E4D19E8950F38C6D06C6558ECA1740E5B73DD';
-    // const username = 'peticavictor.developer@gmail.com';
-    // const secretToken = 'OqMl3qeKE0djUYgXAoSUqt8JW';
-    // const password = 'Mekanys123' + secretToken;
-    // const grant_type = 'password';
-
+    const url = 'https://salesforce-lnirwi.5sc6y6-1.usa-e2.cloudhub.io/create';
+    const url2 = 'https://dummy.restapiexample.com/api/v1/create';
     const body = [
         {
-           "Name" : form['account'],
-           "Description" : form['description'],
-           "Account Number" : "ABC157"
+            "Name" : "test2", 
+            "Description" : "description",
+            "Account Number" : "N2"
         }
-     ]
+    ]
+    const body2 = [
+        {"name":"test","salary":"123","age":"23"}
+    ]
 
-    // const header = {
-    //     'Content-Type': 'application/x-www-form-urlencoded',
-    //     Accept: 'application/json'
-    // }
-
-    const createAccount = async (e) => {
-        e.preventDefault()
-        
-        // fetch(url, {method: 'POST', body: body, header: header})
-        //     .then((response) => {
-        //         console.log('ok')
-        //         console.log(JSON.stringify(response)); //Returns Headers{} object
-        //     })
-        //     .catch(function(err) {
-        //         console.log('Fetch Error', err);
-        //     });
-
-        const response = await fetch(url, {body: body, method: 'POST'})
-        // const value = await response.json()
-        console.log(response)
+    const header = {
+        'cors' : 'no-cors',
+        'Access-Control-Allow-Origin': '*',
+        'Accept': '*/*',
+        'Content-Type': 'application/json',
+        'Accept-Encoding': 'gzip, deflate, br',
+        'Connection' : 'keep-alive',
+        'Content-Length' : '<calculated when request is sent>',
+        'Host' : '<calculated when request is sent>',
+        'User-Agent' : 'PostmanRuntime/7.30.0',
     }
-
-    const getJobs = async (e) => {
-        e.preventDefault()
-        const api = "https://api.adzuna.com/v1/api/jobs/gb/search/1?app_id=9974d359&app_key=9927dfde5d3566725160c08de87ca655&results_per_page=200&content-type=application/json"
-        const response = await fetch(api)
-        const value = await response.json()
-        console.log(value)
+    
+    const postAccount = async (e) => {
+        e.preventDefault();
+        axios(url, {
+            method: 'POST',
+            // mode: 'no-cors',
+            // headers: {
+            //     'Access-Control-Allow-Origin': '*',
+            //     Accept: 'application/json',
+            //     'Content-Type': 'application/json',
+            // },
+            body
+        }).then((response) => {
+            console.log(response);
+        }).catch((e) => {
+            console.log(e);
+        });
     }
 
     return <ReactScrollWheelHandler
@@ -102,7 +100,7 @@ function Services() {
         <div className="services d-flex justify-content-center align-items-center">
             <h1 className='service-name text-light'>{shownService}</h1>
             <div className="h-100 bg-dark d-flex flex-column justify-content-center align-items-center" style={{width:'33vw', opacity: '80%'}}>
-                    <form ref={form} onSubmit={createAccount} className='text-center '>
+                    <form ref={form} onSubmit={postAccount} className='text-center '>
                         <h1 className='text-light ms-2'>Email Us</h1>
                         <input id='user-name' type="text"  placeholder='Company' className='form-control mt-2' name="account" required />
                         {/* <input id='user-email' type="text"  placeholder='Email' className='form-control mt-2' name="user_email" required/> */}
