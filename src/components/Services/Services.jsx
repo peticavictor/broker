@@ -59,7 +59,7 @@ function Services() {
         e.preventDefault();
         axios(url, {
             method: 'POST',
-            // mode: 'no-cors',
+            mode: 'no-cors',
             // headers: {
             //     'Access-Control-Allow-Origin': '*',
             //     Accept: 'application/json',
