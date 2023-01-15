@@ -62,8 +62,9 @@ export default function Contacts() {
                     <form ref={form} onSubmit={sendEmail} className='text-center '>
                         <h1 className='text-light ms-2'>Email Us</h1>
                         <input id='user-name' type="text"  placeholder='Name' className='form-control mt-2' name="user_name" required />
+                        <input id='company' type="text"  placeholder='Company' className='form-control mt-2' name="company" required />
                         <input id='user-email' type="email"  placeholder='Email' className='form-control mt-2' name="user_email" required/>
-                        <input id='user-message' type="text"  placeholder='Content' className='form-control mt-2' name="message" required/>
+                        <input id='user-message' type="text"  placeholder='Message' className='form-control mt-2' name="message" required/>
                         <input type="submit" className="btn btn-outline-light m-2" value="Send"/>
                     </form>
                 </div>

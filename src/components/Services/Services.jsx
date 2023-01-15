@@ -6,8 +6,6 @@ import './Services.css';
 
 function Services() {
 
-    // const express = require('express');
-
     const services = [
         'Import',
         'Export',
@@ -31,46 +29,27 @@ function Services() {
 
     const form = useRef();
     const url = 'https://salesforce-lnirwi.5sc6y6-1.usa-e2.cloudhub.io/create';
-    const url2 = 'https://dummy.restapiexample.com/api/v1/create';
-    const body = [
-        {
-            "Name" : "test2", 
-            "Description" : "description",
-            "Account Number" : "N2"
-        }
-    ]
-    const body2 = [
-        {"name":"test","salary":"123","age":"23"}
-    ]
 
-    const headers= [
-        {
-        "source": "/api/(.*)",
-        "headers": [
-            { "key": "Access-Control-Allow-Credentials", "value": "true" },
-            { "key": "Access-Control-Allow-Origin", "value": "*" },
-            { "key": "Access-Control-Allow-Methods", "value": "GET,OPTIONS,PATCH,DELETE,POST,PUT" },
-            { "key": "Access-Control-Allow-Headers", "value": "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" }
-        ]
-        }
-    ]
-    
     const postAccount = async (e) => {
         e.preventDefault();
-        axios(url, {
-            method: 'POST',
-            // mode: 'no-cors',
-            headers: headers, //{
-            //     'Access-Control-Allow-Origin': '*',
-            //     Accept: 'application/json',
-            //     'Content-Type': 'application/json',
-            // },
-            body: body
-        }).then((response) => {
-            console.log(response);
-        }).catch((e) => {
-            console.log(e);
-        });
+
+        const body = [
+            {
+                Name: document.getElementById('account').value,
+                Phone: document.getElementById('phone').value,
+                "Account Number" : "123",
+                Description: document.getElementById('description').value
+            }
+        ]
+                
+        const response = await fetch(url, {
+            body: JSON.stringify(body),
+            method: 'POST', 
+            mode:'no-cors', 
+            headers: {'Content-Type': 'application/json'} 
+        })
+        
+        console.log(response.status)
     }
 
     return <ReactScrollWheelHandler
@@ -100,14 +79,14 @@ function Services() {
         <div className="services d-flex justify-content-center align-items-center">
             <h1 className='service-name text-light'>{shownService}</h1>
             <div className="h-100 bg-dark d-flex flex-column justify-content-center align-items-center" style={{width:'33vw', opacity: '80%'}}>
-                    <form ref={form} onSubmit={postAccount} className='text-center '>
-                        <h1 className='text-light ms-2'>Email Us</h1>
-                        <input id='user-name' type="text"  placeholder='Company' className='form-control mt-2' name="account" required />
-                        {/* <input id='user-email' type="text"  placeholder='Email' className='form-control mt-2' name="user_email" required/> */}
-                        <input id='user-message' type="text"  placeholder='Description' className='form-control mt-2' name="description" required/>
-                        <input type="submit" className="btn btn-outline-light m-2" value="Send"/>
-                    </form>
-                </div>
+                <form ref={form} onSubmit={postAccount} className='text-center '>
+                    <h1 className='text-light ms-2'>Email Us</h1>
+                    <input id='account' type="text"  placeholder='Company' className='form-control mt-2' name="account" required />
+                    <input id='phone' type="text"  placeholder='Phone: +373788841166' className='form-control mt-2' name="phone" required/>
+                    <input id='description' type="text"  placeholder='Description' className='form-control mt-2' name="description" required/>
+                    <input type="submit" className="btn btn-outline-light m-2" value="Send"/>
+                </form>
+            </div>
         </div>
         
     </ReactScrollWheelHandler>
