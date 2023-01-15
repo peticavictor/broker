@@ -60,11 +60,11 @@ function Services() {
         axios(url, {
             method: 'POST',
             mode: 'no-cors',
-            // headers: {
-            //     'Access-Control-Allow-Origin': '*',
-            //     Accept: 'application/json',
-            //     'Content-Type': 'application/json',
-            // },
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
             body
         }).then((response) => {
             console.log(response);
