@@ -67,12 +67,15 @@ function Main() {
         const response = await fetch(urlCreateAccount, {
             body: JSON.stringify(body),
             method: 'POST', 
-            mode:'same-origin', 
-            headers: {'Content-Type': 'application/json'} 
+            // mode:'cors', 
+            headers: {
+              'Content-Type': 'application/json',
+              // 'Access-Control-Allow-Origin' : '*'
+            } 
         })
 
-        const data = await response.json();
-        console.log(data);
+        // const data = await response.json();
+        console.log(response);
         
         alert('Account and Contact registered!');
         document.getElementById('account').value = '';
@@ -83,14 +86,14 @@ function Main() {
       <ReactScrollWheelHandler
       id='main'
       upHandler={(e) => {
-        setIndexToHide(indexToHide > 0 ? indexToHide - 1 : 5);
+        setIndexToHide(indexToHide > 0 ? indexToHide - 1 : 6);
         hideWidgetByIndex(indexToHide); 
-        showWidgetByIndex(indexToHide > 0 ? indexToHide - 1 : 5);
+        showWidgetByIndex(indexToHide > 0 ? indexToHide - 1 : 6);
       }}
       downHandler={(e) => {
-        setIndexToHide(indexToHide < 5 ? indexToHide + 1 : 0);
+        setIndexToHide(indexToHide < 6 ? indexToHide + 1 : 0);
         hideWidgetByIndex(indexToHide); 
-        showWidgetByIndex(indexToHide < 5? indexToHide + 1 : 0);
+        showWidgetByIndex(indexToHide < 6? indexToHide + 1 : 0);
       }}
       timeout = '1'
       >
