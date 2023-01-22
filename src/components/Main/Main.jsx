@@ -52,7 +52,7 @@ function Main() {
     }
 
     const form = useRef();
-    const url = 'https://salesforce-lnirwi.5sc6y6-1.usa-e2.cloudhub.io/create';
+    const urlCreateAccount = 'https://salesforce-lnirwi.5sc6y6-1.usa-e2.cloudhub.io/createAccount';
 
     const postAccount = async (e) => {
         e.preventDefault();
@@ -60,25 +60,27 @@ function Main() {
         const body = [
             {
                 Name: document.getElementById('account').value,
-                Phone: document.getElementById('phone').value,
-                "Account Number" : "123",
-                Description: document.getElementById('description').value
+                Phone: document.getElementById('industry').value
             }
         ]
                 
-        const response = await fetch(url, {
+        const response = await fetch(urlCreateAccount, {
             body: JSON.stringify(body),
             method: 'POST', 
             mode:'no-cors', 
-            headers: {'Content-Type': 'application/json'} 
+            headers: {
+              'Content-Type': 'application/json',
+              "Access-Control-Allow-Origin" : "*", 
+              "Access-Control-Allow-Credentials" : true 
+            } 
         })
 
-        console.log(response);
+        const data = await response.json();
+        console.log(data);
         
         alert('Account and Contact registered!');
         document.getElementById('account').value = '';
-        document.getElementById('phone').value = '';
-        document.getElementById('description').value = '';
+        document.getElementById('industry').value = industries[0].label;
     }
 
     return(
@@ -106,7 +108,7 @@ function Main() {
                 <input id='account' type="text"  placeholder='Company' className='form-control mt-2' name="account" required />
                 <input id='phone' type="text"  placeholder='Phone' className='form-control mt-2' name="phone" required/>
                 <input id='email' type="email"  placeholder='Email' className='form-control mt-2' name="email" required/>
-                <select name="industry" className='form-control mt-2' required>
+                <select id='industry' name="industry" className='form-control mt-2' required>
                   {industries.map((option, index) => (
                     <option key={index} value={option.value}>
                       {option.label}
