@@ -12,8 +12,8 @@ function App() {
       <BrowserRouter>
         <Context >
           <Main />
-          <Services />
-          <Contacts />
+          {/* <Services />
+          <Contacts /> */}
         </Context>
       </BrowserRouter>
     </div>

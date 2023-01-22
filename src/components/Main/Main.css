@@ -4,7 +4,7 @@
 
   background-image: 
     linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),
-    url('https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80') ;
+    url('https://images.unsplash.com/photo-1448697138198-9aa6d0d84bf4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80');
   background-size: cover;
   background-position: bottom;
   transition: 1s;
@@ -16,7 +16,7 @@
   font-family: PT Sans, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.ml12 {
+/* .ml12 {
   font-weight: 200;
   font-size: 1.8em;
   text-transform: uppercase;
@@ -28,7 +28,7 @@
 .letter .ml12 {
   display: inline-block;
   line-height: 1em;
-}
+} */
 
 @media screen and (max-width: 500px) {
   .container h1 {
