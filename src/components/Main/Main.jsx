@@ -67,12 +67,8 @@ function Main() {
         const response = await fetch(urlCreateAccount, {
             body: JSON.stringify(body),
             method: 'POST', 
-            mode:'no-cors', 
-            headers: {
-              'Content-Type': 'application/json',
-              "Access-Control-Allow-Origin" : "*", 
-              "Access-Control-Allow-Credentials" : true 
-            } 
+            mode:'same-origin', 
+            headers: {'Content-Type': 'application/json'} 
         })
 
         const data = await response.json();
