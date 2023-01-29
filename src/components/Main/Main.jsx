@@ -53,21 +53,60 @@ function Main() {
 
     const form = useRef();
     const urlCreateAccount = 'https://salesforce-lnirwi.5sc6y6-1.usa-e2.cloudhub.io/createAccount';
+    const urlCreateContact = 'https://salesforce-lnirwi.5sc6y6-1.usa-e2.cloudhub.io/createContact';
+    const urlAuth = 'https://corapid-dev-ed.develop.my.salesforce.com';
+
+    const token = 'OqMl3qeKE0djUYgXAoSUqt8JW';
+    const pass = 'Mekanys123';
+    const clientId = '3MVG9vvlaB0y1YsKKriE_qRVbGoEwMvXzCJk4P5SFOlDBbIdXPKMFOVZu3E4r4Z83HoV1BX.bZKy52Z3cmpC.';
+    const clientSecret = '9A78018916BB291465362FF11D1E2CC42E9F63167F232299AD8729609953BB6F';
+    const userName = 'peticavictor.developer@gmail.com';
+
+    const auth = async (e) => {
+      e.preventDefault();
+
+      const body = [
+          {
+            grant_type: "password",
+            client_id: clientId,
+            client_secret :clientSecret,
+            username: userName,
+            password: pass + token
+          }
+      ]
+              
+      const response = await fetch(urlAuth, {
+          body: JSON.stringify(body),
+          method: 'POST', 
+          // mode:'no-cors', 
+          headers: {
+            'Content-Type': 'application/json',
+            // 'Access-Control-Allow-Origin' : '*'
+          } 
+      })
+
+      // const data = await response.json();
+      console.log(response);
+      
+      alert('Account and Contact registered!');
+      document.getElementById('account').value = '';
+      document.getElementById('industry').value = industries[0].label;
+  }
 
     const postAccount = async (e) => {
         e.preventDefault();
 
         const body = [
             {
-                Name: document.getElementById('account').value,
-                Phone: document.getElementById('industry').value
+                // Name: document.getElementById('account').value,
+                // Phone: document.getElementById('industry').value
             }
         ]
                 
-        const response = await fetch(urlCreateAccount, {
+        const response = await fetch(urlCreateContact, {
             body: JSON.stringify(body),
             method: 'POST', 
-            // mode:'cors', 
+            mode:'no-cors', 
             headers: {
               'Content-Type': 'application/json',
               // 'Access-Control-Allow-Origin' : '*'
@@ -118,7 +157,7 @@ function Main() {
               </form>
             </div>
             <div className="bg-dark rounded container" id='widget2' style={{width:'33vw', opacity: '80%', display: 'none'}}>
-              <form ref={form} onSubmit={postAccount} className='text-center ' >
+              <form ref={form} onSubmit={auth} className='text-center ' >
                 <h1 className='service-name text-light'>Import</h1>
                 <input id='account' type="text"  placeholder='Company' className='form-control mt-2' name="account" required />
                 <input id='phone' type="text"  placeholder='Phone' className='form-control mt-2' name="phone" required/>
