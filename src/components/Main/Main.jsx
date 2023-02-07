@@ -51,6 +51,10 @@ function Main() {
     document.getElementById('widget' + indexToHide).style.display = 'none';
   }
 
+  function onRegistered() {
+    alert("Thanks! We appreciate that you’ve taken the time to write us. We’ll get back to you very soon.");
+  }
+
   return(
     <ReactScrollWheelHandler
     id='main'
@@ -96,7 +100,7 @@ function Main() {
                   </option>
                 ))}
               </select>
-              <input type="submit" className="btn btn-outline-light m-2" value="Send"/>
+              <input type="submit" onClick={onRegistered} className="btn btn-outline-light m-2" value="Send"/>
             </form>
           </div>
           <div className="bg-dark rounded container" id='widget3' style={{width:'33vw', opacity: '80%', display: 'none'}}>
