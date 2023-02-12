@@ -7,9 +7,6 @@ import { faArrowDown, faArrowLeft, faArrowRight, faArrowRightFromBracket, faArro
 
 function Main() {
   const [indexToHide, setIndexToHide] = useState(0);
-  let email = 'peticavictor@gmail.com';
-  const emailChars = email.split('');
-
   const [pageStyle, setPageStyle] = useState();
 
   const numberOfWidgets = 5;
@@ -22,10 +19,18 @@ function Main() {
   const [company, setCompany] = useState('');
   const [industries, setIndustries] = useState([]);
   const [news, setNews] = useState([]);
+  const [contacts, setContacts] = useState([{Name:'', Email:'', Phone:''}]);
+  const [street, setStreet] = useState();
+  const [shownContact, setShownContact] = useState(0);
 
   const getCorapidAccount = async function() {
     const response = await fetch(urlCorapidAccount);
     const result = await response.json();
+
+    setStreet(result.BillingAddress.street);
+
+    const arr = await Array.from(result.Contacts.records);
+    setContacts(arr);
 
     setCompany({
       Name: result.Name,
@@ -41,6 +46,7 @@ function Main() {
       }
     )
   }
+
   const getIndustries = async function() {
     const response = await fetch(urlGetIndustries);
     const result = await response.json();
@@ -83,14 +89,14 @@ function Main() {
       });
       
       const result = await response.json();
-      console.log(response)
 
       if(response.status !== 200) {
         alert('Something went wrong. To request a service register or contact the broker.');
-        console.log(result)
       } else {
         if(result === '403') {
           alert('wrong token')
+        } else if(result === '402') {
+          alert('You are not registered.')
         } else {
           alert('You have successfully requested a ' + service + '. We thank you for taking the time to write to us. We will get back to you very soon.');
           document.getElementById('opportunityService').value = '';
@@ -98,8 +104,8 @@ function Main() {
           document.getElementById('cmr').value = '';
           document.getElementById('invoice').value = '';
           document.getElementById('token').value = '';
+          console.log(result)
         }
-        console.log(result)
       }
     } else {
       alert('Fill the fields')
@@ -190,6 +196,12 @@ function Main() {
   const [ file, setFile ] = useState(null)
   const [ invoice, setInvoice ] = useState(null)
   
+  const incrementShownContact = function() {
+    setShownContact(shownContact < contacts.length -1 ? shownContact + 1 : 0);
+  }
+  const decrementShownContact = function() {
+    setShownContact(shownContact > 0  ? shownContact -1 : contacts.length -1);
+  }
   
 
   return(
@@ -295,13 +307,20 @@ function Main() {
               </form>
             </div>
             <div className=" widget w-100 bg-dark rounded container" id={'widget' + ++widgetIndex} style={{width:'33vw', opacity: '80%', display: 'none'}}>
-              <div className="h-100 d-flex flex-column justify-content-center align-items-center">
-                <h1 className='text-light'>Meet Us</h1>
-                <h6 className='text-light p-2'>+373 788 411 66</h6> 
-                <h6 className='text-light p-2 d-flex flex-wrap justify-content-center email '>
-                {emailChars.map((char) => <span>{char}</span>)}
-                </h6> 
-                <h6 className='text-light p-2 text-center'>Chisinau, str. Industriala 73</h6> 
+              <div className='d-flex flwx-row justify-content-between'>
+                <div className='d-flex align-items-center'>
+                  <FontAwesomeIcon icon={faArrowAltCircleLeft} className='text-light btn' onClick={incrementShownContact} style={{fontSize:'28px', opacity:'60%'}}/>
+                </div>
+                <div className="h-100 d-flex flex-column justify-content-center align-items-center">
+                  <h1 className='text-light'>Meet Us</h1>
+                  <h6 className='text-light p-2'>{contacts[shownContact].Name}</h6> 
+                  <h6 className='text-light p-2'>{contacts[shownContact].Phone}</h6> 
+                  <h6 className='text-light p-2 d-flex flex-wrap justify-content-center email '>{contacts[shownContact].Email}</h6> 
+                  <h6 className='text-light p-2 text-center'>{street}</h6> 
+                </div>
+                <div className='d-flex align-items-center'>
+                  <FontAwesomeIcon icon={faArrowAltCircleRight} className='text-light btn' onClick={decrementShownContact} style={{fontSize:'28px', opacity:'60%'}}/>
+                </div>
               </div>
             </div>
             <div className='widget w-100 border rounded' style={{width:'33vw',height:'50vh',  display: 'none'}} id={'widget' + ++widgetIndex} >
