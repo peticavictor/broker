@@ -11,7 +11,6 @@ function Main() {
   const emailChars = email.split('');
 
   const [pageStyle, setPageStyle] = useState();
-  const [shownNews, setShownNews] = useState(0);
 
   const numberOfWidgets = 5;
 
@@ -27,7 +26,6 @@ function Main() {
   const getCorapidAccount = async function() {
     const response = await fetch(urlCorapidAccount);
     const result = await response.json();
-    console.log(result)
 
     setCompany({
       Name: result.Name,
@@ -56,8 +54,6 @@ function Main() {
     const result = await response.json();
     const arr = Array.from(result);
     setNews(arr);
-
-    console.log(result)
   }
 
   const getInitialData = async function() {
@@ -67,39 +63,47 @@ function Main() {
   }
 
   const creteOpportunity = async function(event) {
-    event.preventDefault();
-    const service = document.getElementById('opportunityService').value;
-    const email = document.getElementById('opportunityEmail').value;
-    const cmr = document.getElementById('cmr').value;
-    console.log(cmr)
+    if(document.getElementById('cmr').value !== '' && document.getElementById('opportunityService').value !== '' && document.getElementById('invoice').value !== '' && document.getElementById('token').value !== '') {
+      event.preventDefault();
+      const service = document.getElementById('opportunityService').value;
+      const email = document.getElementById('opportunityEmail').value;
+      const token = document.getElementById('token').value;
 
-    const file = {
-          'Title' : cmr,
-          // 'content-length': `${cmr.size}`
+      const body = {
+        service: service,
+        email: email,
+        cmr: file,
+        invoice: invoice,
+        token: token
       }
-
-    const body = {
-      service: service,
-      email: email,
-      cmr: file
-    }
-    const response = await fetch(urlCreateOpportunity,{
+      const response = await fetch(urlCreateOpportunity,{
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
-    const result = await response.json();
+      
+      const result = await response.json();
+      console.log(response)
 
-    if(response.status !== 200) {
-      alert('You are not registered yet. To request a service register or contact the broker.');
-      console.log(result)
+      if(response.status !== 200) {
+        alert('Something went wrong. To request a service register or contact the broker.');
+        console.log(result)
+      } else {
+        if(result === '403') {
+          alert('wrong token')
+        } else {
+          alert('You have successfully requested a ' + service + '. We thank you for taking the time to write to us. We will get back to you very soon.');
+          document.getElementById('opportunityService').value = '';
+          document.getElementById('opportunityEmail').value = '';
+          document.getElementById('cmr').value = '';
+          document.getElementById('invoice').value = '';
+          document.getElementById('token').value = '';
+        }
+        console.log(result)
+      }
     } else {
-      alert('You have successfully requested a ' + service + '. We thank you for taking the time to write to us. We will get back to you very soon.');
-      console.log(result)
+      alert('Fill the fields')
     }
-
-    // document.getElementById('opportunityService').value = '';
-    // document.getElementById('opportunityEmail').value = '';
   }
 
   const showWidgetByIndex = (indexToShow) => {
@@ -139,6 +143,55 @@ function Main() {
     showWidgetByIndex(indexToHide < numberOfWidgets? indexToHide + 1 : 0);
   }
 
+  const fileToBase64 = (file, cb) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(file)
+    reader.onload = function () {
+      cb(null, reader.result)
+    }
+    reader.onerror = function (error) {
+      cb(error, null)
+    }
+  }
+
+  const onUploadFileChange = ({ target }) => {
+    if (target.files < 1 || !target.validity.valid) {
+      return
+    }
+    fileToBase64(target.files[0], (err, result) => {
+      if (result) {
+        setFile(result)
+      }
+    })
+  }
+
+  const invoiceToBase64 = (invoice, cb) => {
+    const reader = new FileReader()
+    reader.readAsDataURL(invoice)
+    reader.onload = function () {
+      cb(null, reader.result)
+    }
+    reader.onerror = function (error) {
+      cb(error, null)
+    }
+  }
+
+  const onUploadInvoiceChange = ({ target }) => {
+    if (target.files < 1 || !target.validity.valid) {
+      return
+    }
+    invoiceToBase64(target.files[0], (err, result) => {
+      if (result) {
+        setInvoice(result)
+      }
+    })
+  }
+
+  const [ file, setFile ] = useState(null)
+  const [ invoice, setInvoice ] = useState(null)
+  
+  
+
   return(
     <ReactScrollWheelHandler
     id='main'
@@ -161,6 +214,7 @@ function Main() {
             <FontAwesomeIcon icon={faArrowUp} className='text-light btn mt-2' onClick={upHandler} style={{fontSize:'28px', opacity:'60%'}}/>
           </div>
           <div className="container d-flex align-items-center justify-content-center h-100">
+            
             <div className='widget' id={'widget' + widgetIndex} style={{opacity: '80%'}}>
               <h1 className="ml12 text-light text-center">{company.Name}</h1>
               <h1 className="ml12 text-light text-center">{company.Description}</h1>
@@ -194,10 +248,10 @@ function Main() {
                 </div>
               </div>
             </div>
-            <div className='widget' id={'widget' + ++widgetIndex} style={{width:'33vw', opacity: '80%', display: 'none'}}>
+            <div className='widget w-100' id={'widget' + ++widgetIndex} style={{width:'33vw', opacity: '80%', display: 'none'}}>
               <h1 className="ml12 text-light text-center">Request Service</h1>
               <div className='d-flex justify-content-around flex-wrap flex-row'>
-                <form className='bg-dark p-3 m-3 rounded'>
+                <form className='bg-dark p-3 m-3 rounded '>
                   <select name="service" className='form-control' id="opportunityService" required>
                     <option value="">Choose Service</option>
                     <option value="Import">Import</option>
@@ -205,20 +259,20 @@ function Main() {
                     <option value="Transit">Transit</option>
                   </select>
                   <input type="email" name='email' id='opportunityEmail' className='form-control my-2' placeholder='Email' required/>
-                  <input type="text" name='token' className='form-control my-2' placeholder='Token'/>
+                  <input type="text" id='token' name='token' className='form-control my-2' placeholder='Token' required/>
                   <div className='d-flex flex-row my-2'>
-                    <label htmlFor="cmr" className='text-light' required>CMR:</label>
-                    <input type="file" name='cmr' id='cmr' className='form-control'/>
+                    <label htmlFor="cmr" className='text-light'>CMR:</label>
+                    <input type="file" name='cmr' id='cmr' onChange={onUploadFileChange} className='form-control' required/>
                   </div>
                   <div className='d-flex flex-row my-2'>
                     <label htmlFor="invoice" className='text-light'>Invoice:</label>
-                    <input type="file" name='invoice' id='invoice' className='form-control'/>
+                    <input type="file" name='invoice' id='invoice' onChange={onUploadInvoiceChange} className='form-control' required/>
                   </div>
                   <button className='btn btn-outline-light' onClick={creteOpportunity}>Request</button>
                 </form>
               </div>
             </div>
-            <div className="widget bg-dark rounded container" id={'widget' + ++widgetIndex} style={{width:'33vw', opacity: '80%', display: 'none'}}>
+            <div className="widget w-100 bg-dark rounded container" id={'widget' + ++widgetIndex} style={{width:'33vw', opacity: '80%', display: 'none'}}>
               <form action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST" className='text-center ' >
                 <input type="hidden" name="oid" value="00D68000000YPIM"/>
                 <input type="hidden" name="lead_source" value="web"/>
@@ -240,7 +294,7 @@ function Main() {
                 <input type="submit" onClick={onRegistered} className="btn btn-outline-light m-2" value="Send"/>
               </form>
             </div>
-            <div className=" widget bg-dark rounded container" id={'widget' + ++widgetIndex} style={{width:'33vw', opacity: '80%', display: 'none'}}>
+            <div className=" widget w-100 bg-dark rounded container" id={'widget' + ++widgetIndex} style={{width:'33vw', opacity: '80%', display: 'none'}}>
               <div className="h-100 d-flex flex-column justify-content-center align-items-center">
                 <h1 className='text-light'>Meet Us</h1>
                 <h6 className='text-light p-2'>+373 788 411 66</h6> 
@@ -250,7 +304,7 @@ function Main() {
                 <h6 className='text-light p-2 text-center'>Chisinau, str. Industriala 73</h6> 
               </div>
             </div>
-            <div className='widget border rounded' style={{width:'33vw',height:'50vh',  display: 'none'}} id={'widget' + ++widgetIndex} >
+            <div className='widget w-100 border rounded' style={{width:'33vw',height:'50vh',  display: 'none'}} id={'widget' + ++widgetIndex} >
               <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2721.1053798376647!2d28.904937876300256!3d46.99890377114059!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40c97bc2d6d95a11%3A0x181c2d076973a4aa!2zU3RyYWRhIEluZHVzdHJpYWzEgyA3MywgQ2hpyJlpbsSDdSwgTW9sZG92YQ!5e0!3m2!1sen!2s!4v1671382327825!5m2!1sen!2s" 
                   width="600 px" 
                   height="600 px" 
