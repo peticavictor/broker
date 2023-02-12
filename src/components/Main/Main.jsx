@@ -1,47 +1,106 @@
 import './Main.css';
 import ReactScrollWheelHandler from "react-scroll-wheel-handler";
 import { useRef, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowAltCircleLeft, faArrowAltCircleRight, faFaceAngry } from '@fortawesome/free-regular-svg-icons';
+import { faArrowDown, faArrowLeft, faArrowRight, faArrowRightFromBracket, faArrowRightLong, faArrowRightToCity, faArrowUp } from '@fortawesome/free-solid-svg-icons';
 
 function Main() {
   const [indexToHide, setIndexToHide] = useState(0);
   let email = 'peticavictor@gmail.com';
   const emailChars = email.split('');
 
-  let industries = [
-    {value: '', label: 'Company\'s industry'},
-    {value: 'Agriculture', label: 'Agriculture'}, 
-    {value: 'Apparel', label: 'Apparel'},
-    {value: 'Banking', label: 'Banking'}, 
-    {value: 'Biotecknology', label: 'Biotecknology'},
-    {value: 'Chemicals', label: 'Chemicals'},
-    {value: 'Comunications', label: 'Comunications'},
-    {value: 'Construction', label: 'Construction'},
-    {value: 'Consulting', label: 'Consulting'},
-    {value: 'Education', label: 'Education'},
-    {value: 'Electronics', label: 'Electronics'},
-    {value: 'Energy', label: 'Energy'},
-    {value: 'Engineering', label: 'Engineering'},
-    {value: 'Entertainment', label: 'Entertainment'},
-    {value: 'Environmental', label: 'Environmental'},
-    {value: 'Finance', label: 'Finance'},
-    {value: 'Food & Beverage', label: 'Food & Beverage'},
-    {value: 'Government', label: 'Government'},
-    {value: 'Healthcare', label: 'Healthcare'},
-    {value: 'Hospitality', label: 'Hospitality'},
-    {value: 'Insurance', label: 'Insurance'},
-    {value: 'Machinery', label: 'Machinery'},
-    {value: 'Manufacturing', label: 'Manufacturing'},
-    {value: 'Media', label: 'Media'},
-    {value: 'Not For Profit', label: 'Not For Profit'},
-    {value: 'Recreation', label: 'Recreation'},
-    {value: 'Retail', label: 'Retail'},
-    {value: 'Shipping', label: 'Shipping'},
-    {value: 'Technology', label: 'Technology'},
-    {value: 'Telecommunications', label: 'Telecommunications'},
-    {value: 'Transportation', label: 'Transportation'},
-    {value: 'Utilities', label: 'Utilities'},
-    {value: 'Other', label: 'Other'}
-  ];
+  const [pageStyle, setPageStyle] = useState();
+  const [shownNews, setShownNews] = useState(0);
+
+  const numberOfWidgets = 5;
+
+  const urlGetNews = 'https://corapid-dev-ed.develop.my.salesforce-sites.com/services/apexrest/v1/News/'
+  const urlCorapidAccount = 'https://corapid-dev-ed.develop.my.salesforce-sites.com/services/apexrest/v1/Accounts/'
+  const urlGetIndustries = 'https://corapid-dev-ed.develop.my.salesforce-sites.com/services/apexrest/v1/Industries/'
+  const urlCreateOpportunity = 'https://corapid-dev-ed.develop.my.salesforce-sites.com/services/apexrest/v1/Opportunities/'
+
+  const [company, setCompany] = useState('');
+  const [industries, setIndustries] = useState([]);
+  const [news, setNews] = useState([]);
+
+  const getCorapidAccount = async function() {
+    const response = await fetch(urlCorapidAccount);
+    const result = await response.json();
+    console.log(result)
+
+    setCompany({
+      Name: result.Name,
+      Id: result.Id,
+      Description: result.Description,
+      Website: result.Website
+    })
+
+    setPageStyle({
+        background:' linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url(' + result.Website + ')',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+      }
+    )
+  }
+  const getIndustries = async function() {
+    const response = await fetch(urlGetIndustries);
+    const result = await response.json();
+    
+    const arr = Array.from(result);
+    setIndustries(arr)
+  }
+
+  const getNews = async function() {
+    const response = await fetch(urlGetNews);
+    const result = await response.json();
+    const arr = Array.from(result);
+    setNews(arr);
+
+    console.log(result)
+  }
+
+  const getInitialData = async function() {
+    await getCorapidAccount();
+    await getIndustries();
+    await getNews();
+  }
+
+  const creteOpportunity = async function(event) {
+    event.preventDefault();
+    const service = document.getElementById('opportunityService').value;
+    const email = document.getElementById('opportunityEmail').value;
+    const cmr = document.getElementById('cmr').value;
+    console.log(cmr)
+
+    const file = {
+          'Title' : cmr,
+          // 'content-length': `${cmr.size}`
+      }
+
+    const body = {
+      service: service,
+      email: email,
+      cmr: file
+    }
+    const response = await fetch(urlCreateOpportunity,{
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+    const result = await response.json();
+
+    if(response.status !== 200) {
+      alert('You are not registered yet. To request a service register or contact the broker.');
+      console.log(result)
+    } else {
+      alert('You have successfully requested a ' + service + '. We thank you for taking the time to write to us. We will get back to you very soon.');
+      console.log(result)
+    }
+
+    // document.getElementById('opportunityService').value = '';
+    // document.getElementById('opportunityEmail').value = '';
+  }
 
   const showWidgetByIndex = (indexToShow) => {
     document.getElementById('widget' + indexToShow).style.display = '';
@@ -55,74 +114,155 @@ function Main() {
     alert("Thanks! We appreciate that you’ve taken the time to write us. We’ll get back to you very soon.");
   }
 
+  let widgetIndex = 0
+
+  const [current, setCurrent] = useState(0);
+  const length = news.length;
+
+  const nextNews = () => {
+    setCurrent(current === length - 1 ? 0 : current + 1);
+  };
+
+  const prevNews = () => {
+    setCurrent(current === 0 ? length - 1 : current - 1);
+  };
+
+  const upHandler = function() {
+    setIndexToHide(indexToHide > 0 ? indexToHide - 1 : numberOfWidgets);
+    hideWidgetByIndex(indexToHide); 
+    showWidgetByIndex(indexToHide > 0 ? indexToHide - 1 : numberOfWidgets);
+  }
+
+  const downHandler= function() {
+    setIndexToHide(indexToHide < numberOfWidgets ? indexToHide + 1 : 0);
+    hideWidgetByIndex(indexToHide); 
+    showWidgetByIndex(indexToHide < numberOfWidgets? indexToHide + 1 : 0);
+  }
+
   return(
     <ReactScrollWheelHandler
     id='main'
     upHandler={(e) => {
-      setIndexToHide(indexToHide > 0 ? indexToHide - 1 : 4);
+      setIndexToHide(indexToHide > 0 ? indexToHide - 1 : numberOfWidgets);
       hideWidgetByIndex(indexToHide); 
-      showWidgetByIndex(indexToHide > 0 ? indexToHide - 1 : 4);
+      showWidgetByIndex(indexToHide > 0 ? indexToHide - 1 : numberOfWidgets);
     }}
     downHandler={(e) => {
-      setIndexToHide(indexToHide < 4 ? indexToHide + 1 : 0);
+      setIndexToHide(indexToHide < numberOfWidgets ? indexToHide + 1 : 0);
       hideWidgetByIndex(indexToHide); 
-      showWidgetByIndex(indexToHide < 4? indexToHide + 1 : 0);
+      showWidgetByIndex(indexToHide < numberOfWidgets? indexToHide + 1 : 0);
     }}
-    timeout = '1'
+    timeout = '200'
+    onLoad={getInitialData}
     >
-      <div className="main d-flex align-items-center justify-content-center h-100 w-100" >
-        <div className="container d-flex align-items-center justify-content-center">
-          <div  id='widget0' style={{opacity: '80%'}}>
-            <h1 className="ml12 text-light text-center">Corapid</h1>
-            <h1 className="ml12 text-light text-center">Broker company</h1>
+      <div className="main d-flex align-items-center justify-content-center h-100 w-100"  style={pageStyle}>
+        <div className='d-flex flex-column justify-content-between h-100 w-100'>
+          <div className='text-center'>
+            <FontAwesomeIcon icon={faArrowUp} className='text-light btn mt-2' onClick={upHandler} style={{fontSize:'28px', opacity:'60%'}}/>
           </div>
-          <div  id='widget1' style={{width:'33vw', opacity: '80%', display: 'none'}}>
-            <h1 className="ml12 text-light text-center">Services</h1>
-            <h4 className="ml12 text-light text-center">Import</h4>
-            <h4 className="ml12 text-light text-center">Export</h4>
-            <h4 className="ml12 text-light text-center">Transit</h4>
-          </div>
-          <div className="bg-dark rounded container" id='widget2' style={{width:'33vw', opacity: '80%', display: 'none'}}>
-            <form action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST" className='text-center ' >
-              <input type="hidden" name="oid" value="00D68000000YPIM"/>
-              <input type="hidden" name="lead_source" value="web"/>
-              <input type="hidden" name="retURL" value="https://broker-one.vercel.app/"/>
-              <h1 className='text-light ms-2'>contact us</h1>
-              <input id='first_name' type="text"  placeholder='Your Name' className='form-control mt-2' name="first_name" required />
-              <input id='last_name' type="text"  placeholder='Your Last Name' className='form-control mt-2' name="last_name" required />
-              <input id='company' type="text"  placeholder='Company' className='form-control mt-2' name="company" required />
-              <input id='phone' type="text"  placeholder='Phone' className='form-control mt-2' name="phone" required/>
-              <input id='email' type="email"  placeholder='Email' className='form-control mt-2' name="email" required/>
-              <select id='industry' name="industry" className='form-control mt-2' required>
-                {industries.map((option, index) => (
-                  <option key={index} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              <input type="submit" onClick={onRegistered} className="btn btn-outline-light m-2" value="Send"/>
-            </form>
-          </div>
-          <div className="bg-dark rounded container" id='widget3' style={{width:'33vw', opacity: '80%', display: 'none'}}>
-            <div className="h-100 d-flex flex-column justify-content-center align-items-center">
-              <h1 className='text-light'>Meet Us</h1>
-              <h6 className='text-light p-2'>+373 788 411 66</h6> 
-              <h6 className='text-light p-2 d-flex flex-wrap justify-content-center email '>
-              {emailChars.map((char) => <span>{char}</span>)}
-              </h6> 
-              <h6 className='text-light p-2 text-center'>Chisinau, str. Industriala 73</h6> 
+          <div className="container d-flex align-items-center justify-content-center h-100">
+            <div className='widget' id={'widget' + widgetIndex} style={{opacity: '80%'}}>
+              <h1 className="ml12 text-light text-center">{company.Name}</h1>
+              <h1 className="ml12 text-light text-center">{company.Description}</h1>
+            </div>
+            <div className='container widget align-items-center  w-100 ' id={'widget' + ++widgetIndex} style={{width:'33vw', opacity: '80%', display: 'none'}}>
+              <div className='d-flex flex-column align-items-center'>
+                <h1 className='ml12 text-light text-center' style={{fontSize: '42px'}}>News</h1>
+                <div className='d-flex justify-content-between py-5 w-100 bg-dark rounded '>
+                  <div className='d-flex align-items-center'>
+                    <FontAwesomeIcon icon={faArrowAltCircleLeft} className='text-light btn' onClick={prevNews} style={{fontSize:'28px', opacity:'60%'}}/>
+                  </div>
+                  {news.map((slide, index) => {
+                    return (
+                      <div
+                      className={index === current ? 'slide active' : 'slide'}
+                      key={index}
+                      >
+                        {index === current && (
+                          <div>
+                            <h1 className="ml12 text-light text-center" style={{fontSize: '24px'}}>{slide.Name} </h1>
+                            <h1 className="ml12 text-light text-center" style={{fontSize: '16px'}}>{slide.Description__c}</h1>
+                            <h1 className="ml12 text-light text-end" style={{fontSize: '14px'}}>{new Date(slide.CreatedDate).toDateString()}</h1>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                  <div className='d-flex align-items-center'>
+                    <FontAwesomeIcon icon={faArrowAltCircleRight} className='text-light btn' onClick={nextNews} style={{fontSize:'28px', opacity:'60%'}}/>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className='widget' id={'widget' + ++widgetIndex} style={{width:'33vw', opacity: '80%', display: 'none'}}>
+              <h1 className="ml12 text-light text-center">Request Service</h1>
+              <div className='d-flex justify-content-around flex-wrap flex-row'>
+                <form className='bg-dark p-3 m-3 rounded'>
+                  <select name="service" className='form-control' id="opportunityService" required>
+                    <option value="">Choose Service</option>
+                    <option value="Import">Import</option>
+                    <option value="Export">Export</option>
+                    <option value="Transit">Transit</option>
+                  </select>
+                  <input type="email" name='email' id='opportunityEmail' className='form-control my-2' placeholder='Email' required/>
+                  <input type="text" name='token' className='form-control my-2' placeholder='Token'/>
+                  <div className='d-flex flex-row my-2'>
+                    <label htmlFor="cmr" className='text-light' required>CMR:</label>
+                    <input type="file" name='cmr' id='cmr' className='form-control'/>
+                  </div>
+                  <div className='d-flex flex-row my-2'>
+                    <label htmlFor="invoice" className='text-light'>Invoice:</label>
+                    <input type="file" name='invoice' id='invoice' className='form-control'/>
+                  </div>
+                  <button className='btn btn-outline-light' onClick={creteOpportunity}>Request</button>
+                </form>
+              </div>
+            </div>
+            <div className="widget bg-dark rounded container" id={'widget' + ++widgetIndex} style={{width:'33vw', opacity: '80%', display: 'none'}}>
+              <form action="https://webto.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="POST" className='text-center ' >
+                <input type="hidden" name="oid" value="00D68000000YPIM"/>
+                <input type="hidden" name="lead_source" value="web"/>
+                <input type="hidden" name="retURL" value="https://broker-one.vercel.app/"/>
+                <h1 className='text-light ms-2'>register</h1>
+                <input id='first_name' type="text"  placeholder='Your Name' className='form-control mt-2' name="first_name" required />
+                <input id='last_name' type="text"  placeholder='Your Last Name' className='form-control mt-2' name="last_name" required />
+                <input id='company' type="text"  placeholder='Company' className='form-control mt-2' name="company" required />
+                <input id='phone' type="text"  placeholder='Phone' className='form-control mt-2' name="phone" required/>
+                <input id='email' type="email"  placeholder='Email' className='form-control mt-2' name="email" required/>
+                <select id='industry' name="industry" className='form-control mt-2' required>
+                  <option value="">Choose Industry</option>
+                  {industries.map(option => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+                <input type="submit" onClick={onRegistered} className="btn btn-outline-light m-2" value="Send"/>
+              </form>
+            </div>
+            <div className=" widget bg-dark rounded container" id={'widget' + ++widgetIndex} style={{width:'33vw', opacity: '80%', display: 'none'}}>
+              <div className="h-100 d-flex flex-column justify-content-center align-items-center">
+                <h1 className='text-light'>Meet Us</h1>
+                <h6 className='text-light p-2'>+373 788 411 66</h6> 
+                <h6 className='text-light p-2 d-flex flex-wrap justify-content-center email '>
+                {emailChars.map((char) => <span>{char}</span>)}
+                </h6> 
+                <h6 className='text-light p-2 text-center'>Chisinau, str. Industriala 73</h6> 
+              </div>
+            </div>
+            <div className='widget border rounded' style={{width:'33vw',height:'50vh',  display: 'none'}} id={'widget' + ++widgetIndex} >
+              <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2721.1053798376647!2d28.904937876300256!3d46.99890377114059!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40c97bc2d6d95a11%3A0x181c2d076973a4aa!2zU3RyYWRhIEluZHVzdHJpYWzEgyA3MywgQ2hpyJlpbsSDdSwgTW9sZG92YQ!5e0!3m2!1sen!2s!4v1671382327825!5m2!1sen!2s" 
+                  width="600 px" 
+                  height="600 px" 
+                  style={{borderRadius: '5px', opacity: '90%'}}
+                  title='map'
+                  className='h-100 w-100'>
+              </iframe>
             </div>
           </div>
-          <div className='border rounded' style={{width:'33vw',height:'50vh',  display: 'none'}} id='widget4' >
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2721.1053798376647!2d28.904937876300256!3d46.99890377114059!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40c97bc2d6d95a11%3A0x181c2d076973a4aa!2zU3RyYWRhIEluZHVzdHJpYWzEgyA3MywgQ2hpyJlpbsSDdSwgTW9sZG92YQ!5e0!3m2!1sen!2s!4v1671382327825!5m2!1sen!2s" 
-                width="600 px" 
-                height="600 px" 
-                style={{borderRadius: '5px', opacity: '90%'}}
-                title='map'
-                className='h-100 w-100'>
-            </iframe>
+          <div className='text-center'>
+            <FontAwesomeIcon icon={faArrowDown} className='text-light btn mb-2' onClick={downHandler} style={{fontSize:'28px', opacity:'60%'}}/>
           </div>
-          
         </div>
       </div>
     </ReactScrollWheelHandler>

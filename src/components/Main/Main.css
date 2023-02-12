@@ -1,14 +1,15 @@
 #main {
   height: 100vh;
-  transition: 1s;
+  /* transition: 1s; */
 
-  background-image: 
-    linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)),
-    url('https://images.unsplash.com/photo-1448697138198-9aa6d0d84bf4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80');
-  background-size: cover;
-  background-position: bottom;
-  transition: 1s;
-  transition: 1s;
+  /* background-image:  */
+    /* linear-gradient(rgba(0,0,0,0.3),rgba(0,0,0,0.3)); */
+    /* url({company.Website}); */
+    /* url('https://images.unsplash.com/photo-1448697138198-9aa6d0d84bf4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80'); */
+  /* background-size: cover;
+  background-position: bottom; */
+  /* transition: 1s;
+  transition: 1s; */
 }
 
 .container {
@@ -16,19 +17,22 @@
   font-family: PT Sans, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* .ml12 {
+.widget {
+  transition: opacity 1s ease-out;
+}
+
+.ml12 {
   font-weight: 200;
-  font-size: 1.8em;
+  font-size: 24px;
   text-transform: uppercase;
   letter-spacing: 0.5em;
-  padding-top: 15%;
   text-align: center;
 }
 
 .letter .ml12 {
-  display: inline-block;
+  /* display: inline-block; */
   line-height: 1em;
-} */
+}
 
 @media screen and (max-width: 500px) {
   .container h1 {
