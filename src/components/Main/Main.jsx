@@ -91,7 +91,7 @@ function Main() {
       const result = await response.json();
 
       if(response.status !== 200) {
-        console.log(JSON.stringify(response));
+        console.log(response);
         alert('Something went wrong. To request a service register or contact the broker.');
       } else {
         if(result === '403') {
