@@ -94,7 +94,7 @@ function Main() {
         console.log(response);
         alert('Something went wrong. To request a service register or contact the broker.');
       } else {
-        if(result === '403') {
+        if(result.contains('403')) {
           alert('wrong token')
         } else if(result === '402') {
           alert('You are not registered.')
