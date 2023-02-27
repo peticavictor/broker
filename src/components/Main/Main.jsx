@@ -91,12 +91,12 @@ function Main() {
       const result = await response.json();
 
       if(response.status !== 200) {
-        console.log(response);
+        console.log(response);  
         alert('Something went wrong. To request a service register or contact the broker.');
       } else {
         if(result === '403') {
           alert('wrong token')
-        } else if(result === '402') {
+        } else if(result.includes('402')) {
           alert('You are not registered.')
         } else {
           alert('You have successfully requested a ' + service + '. We thank you for taking the time to write to us. We will get back to you very soon.');
